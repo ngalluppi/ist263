@@ -9,6 +9,8 @@ h1, h2, h3 {
     color: #4717F6; 
 }
 
+.evenrow {background-color: lightblue;}
+
 a {
     color: #A239CA; 
     text-decoration: none;
@@ -29,7 +31,7 @@ nav a {
 }
 
 nav a:hover {
-    color: #A239CA; 
+    background-color: #A239CA; 
 }
 
 
