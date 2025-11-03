@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Homelab – Building the Homelab (Setup)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hardware, networking, and software setup details for the homelab.">
+</head>
+<body>
+  <header>
+    <div>
+      <a href="index.html" aria-label="Homelab Home"><strong>🏠 Homelab</strong></a>
+    </div>
+    <nav aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="building.html" aria-current="page">Setup</a>
+      <a href="use-cases.html">Use Cases</a>
+    </nav>
+  </header>
+
+  <main>
+    <section aria-labelledby="build-hero-title">
+      <h1 id="build-hero-title">Building the <span>Homelab</span></h1>
+      <p>Discover how I designed and built my homelab. See the hardware and software choices I made, and what I learned in the process.</p>
+    </section>
+
+
+    <section aria-labelledby="hardware-title">
+      <h2 id="hardware-title">Hardware</h2>
+      <figure>
+        <img src="images/hardware.jpg" alt="PC case and small server gear">
+        <figcaption>Custom low-cost PC chosen for flexibility.</figcaption>
+      </figure>
+      <ul>
+        <li>CPU/RAM sized for several VMs</li>
+        <li>SSD for OS + HDD/SSD for data</li>
+        <li>Reliable PSU and adequate cooling</li>
+        <li>Optional: small NAS or used mini-PCs</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="networking-title">
+      <h2 id="networking-title">Networking</h2>
+      <figure>
+        <img src="images/networking.jpg" alt="Chain/links icon concept">
+        <figcaption>Segmentation for performance and safety.</figcaption>
+      </figure>
+      <ul>
+        <li>Network segmentation for different device types</li>
+        <li>Firewall rules to contain lab experiments</li>
+        <li>Separate guest/test networks</li>
+        <li>Basic performance/monitoring checks</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="software-title">
+      <h2 id="software-title">Software Setup</h2>
+      <figure>
+        <img src="images/software.jpg" alt="Laptop/application concept">
+        <figcaption>Linux base + hypervisor + containers.</figcaption>
+      </figure>
+      <ul>
+        <li>Linux install + hypervisor (e.g., Proxmox)</li>
+        <li>Containers (e.g., Docker) for app deployment</li>
+        <li>Centralized updates/backups</li>
+        <li>Open-source software for experimentation</li>
+      </ul>
+    </section>
+
+   
+    <section aria-labelledby="arch-title">
+      <h2 id="arch-title">System Architecture</h2>
+      <figure>
+        <img src="images/architecture.jpg" alt="Simple diagram of one host connected to several VMs/services">
+        <figcaption>One host connected to VMs, storage, network, and management tools.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="specs-title">
+      <h2 id="specs-title">My reference specs</h2>
+      <dl>
+        <dt>Processor</dt><dd>4–8 cores</dd>
+        <dt>Memory</dt><dd>32–64 GB</dd>
+        <dt>Storage</dt><dd>OS: 512 GB SSD &middot; Data: 4 TB HDD/SSD</dd>
+        <dt>Power Supply</dt><dd>450–650 W</dd>
+      </dl>
+    </section>
+  </main>
+
+  <footer>
+    <section aria-label="Footer columns">
+      <div>
+        <h4>My Homelab</h4>
+        <p>A student project exploring home server infrastructure and self-hosted applications.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="building.html">Setup</a></li>
+          <li><a href="use-cases.html">Use Cases</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: <a href="mailto:nngallup@syr.edu">nngallup@syr.edu</a></p>
+        <p>GitHub: <a href="https://github.com/your-user/my-homelab-project">/my-homelab-project</a></p>
+      </div>
+    </section>
+    <p>&copy; 2025 My Homelab.</p>
+  </footer>
+</body>
+</html>
