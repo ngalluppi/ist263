@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Pt 2 Week 12</title>
+
+    <script>
+
+        function bigly() {
+            document.getElementById("p1").innerHTML= "New Content"
+        }
+
+        function wrongAnswer() {
+            document.getElementById("wrong").innerHTML= "<span style='color:red;'> True is the wrong answer</span>"
+        }
+
+        function changeImage() {
+            document.getElementById("teamsimage").setAttribute("src","../ist263/Images/jupiter.png")
+        }
+
+        function bluey() {
+            document.getElementById("p2").style.color="#0000FF";
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+    <p id="p1" onclick="bigly();">Content Goes Here</p>
+    <p id="p2">Paragraph 2</p>
+
+        <h1 onmouseover="bluey();">My JavaScript Quiz</h1>
+    <p>Java and JavaScript are the same thing.</p>
+    <p onclick="wrongAnswer();" id="wrong">True</p>
+    <p onclick="rightAnswer();" id="correct">False</p>
+
+    <img src="../ist263/Images/mars.jpg" id="teamsimage" onclick="changeImage();">
+
+</body>
+</html>
