@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Homelab – Setup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <span class="logo-icon">🏠</span>
+            <span class="logo-text">Homelab</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="building.html" class="active">Setup</a>
+            <a href="use-cases.html">Use Cases</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero hero-setup">
+        <div class="container">
+            <h1>Building the <span class="highlight">Homelab</span></h1>
+            <p>
+                This page explains how I built my homelab from the hardware on my desk
+                to the software running virtual machines and storage.
+            </p>
+        </div>
+    </section>
+
+    <section class="section section-light">
+        <div class="container setup-grid">
+            <div class="setup-main">
+                <article class="setup-card">
+                    <div class="setup-card-image">
+                        <img src="images/parts.png"
+                             alt="PC case, motherboard, CPU, RAM, and other parts on a table before assembly">
+                    </div>                    
+                    <div class="setup-card-body">
+                        <h2>Hardware</h2>
+                        <p>
+                            When starting a homelab, the first decision is choosing hardware.
+                            I built a small desktop-style server that balances performance,
+                            cost, and power usage.
+                        </p>
+                        <ul class="check-list">
+                            <li>ASRock motherboard with support for future upgrades.</li>
+                            <li>Intel Core i3 processor.</li>
+                            <li>16 GB of RAM (with room to add more later).</li>
+                            <li>Fast SSD for the operating system and virtual machines.</li>
+                            <li>Larger hard drive for bulk storage and backups.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="setup-card">
+                    <div class="setup-card-image">
+                        <img src="images/rack.png"
+                             alt="Network rack in a homelab with switches, routers, and cables">
+                    </div>
+                    
+                    <div class="setup-card-body">
+                        <h2>Networking</h2>
+                        <p>
+                            Networking is the backbone of any homelab. Properly configured
+                            switches, routers, and wireless access points keep devices
+                            connected and secure.
+                        </p>
+                        <ul class="check-list">
+                            <li>Separate network for lab devices and personal devices.</li>
+                            <li>Basic firewall rules to control traffic between segments.</li>
+                            <li>Ethernet connections for servers and key devices.</li>
+                            <li>Simple monitoring tools to watch network usage.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="setup-card">
+                    <div class="setup-card-image">
+                        <img src="images/truenas.png"
+                             alt="TrueNAS web dashboard showing system information and storage">
+                    </div>
+                    
+                    <div class="setup-card-body">
+                        <h2>Software Setup</h2>
+                        <p>
+                            The software stack is where most of the experimenting happens.
+                            I use a mix of virtualization and storage tools to run the lab.
+                        </p>
+                        <ul class="check-list">
+                            <li>Linux installed as the base operating system.</li>
+                            <li>A hypervisor to manage virtual machines.</li>
+                            <li>TrueNAS or similar software for file storage.</li>
+                            <li>Docker containers for lightweight services.</li>
+                            <li>Regular backups so I can recover from mistakes.</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="setup-sidebar">
+                <div class="sidebar-card">
+                    <h3>System Architecture</h3>
+                    <p class="sidebar-text">
+                        The homelab connects a single physical server to several virtual
+                        machines, storage pools, and the rest of the home network.
+                    </p>
+                    <div class="arch-diagram">
+                        <div class="arch-center"></div>
+                        <div class="arch-node arch-node-top"></div>
+                        <div class="arch-node arch-node-right"></div>
+                        <div class="arch-node arch-node-bottom"></div>
+                        <div class="arch-node arch-node-left"></div>
+                    </div>
+                    <p class="arch-caption">
+                        Central host connected to VMs, storage, and network devices.
+                    </p>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3>My Hardware Specs</h3>
+                    <ul class="spec-list">
+                        <li><strong>Processor:</strong> Intel Core i3 (10th Gen)</li>
+                        <li><strong>Memory:</strong> 16 GB RAM</li>
+                        <li><strong>Storage:</strong> 4 TB HDD + 256 GB SSD</li>
+                        <li><strong>Power Supply:</strong> 600 W</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="footer-column">
+            <h4>My Homelab</h4>
+            <p>A student project exploring home server infrastructure and self-hosted applications.</p>
+        </div>
+        <div class="footer-column">
+            <h4>Navigation</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="building.html">Setup</a></li>
+                <li><a href="use-cases.html">Use Cases</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Contact</h4>
+            <p>Email: <a href="mailto:nngallup@syr.edu">nngallupp@syr.edu</a></p>
+            <p>GitHub: <a href="https://github.com/ngalluppi">github.com/ngalluppi</a></p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 My Homelab. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>
