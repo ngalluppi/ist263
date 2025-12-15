@@ -320,8 +320,8 @@ img {
 
 
 .setup-card-image {
-    max-height: 230px;
-    overflow: hidden;
+    overflow: visible;
+    max-height: none;
 }
 
 .setup-card-image img {
