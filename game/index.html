@@ -1,0 +1,727 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ride the Bus Multiplayer</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+      color:white;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;
+      padding:30px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:10px;
+      font-size:2.7rem;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#cbd5e1;
+      margin-bottom:30px;
+    }
+
+    .join-screen{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:15px;
+    }
+
+    input{
+      width:100%;
+      max-width:350px;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      font-size:1rem;
+      outline:none;
+    }
+
+    button{
+      padding:14px 22px;
+      border:none;
+      border-radius:12px;
+      background:#3b82f6;
+      color:white;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-2px);
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .players{
+      background:rgba(255,255,255,0.06);
+      padding:15px;
+      border-radius:14px;
+      margin-bottom:20px;
+    }
+
+    .players h3{
+      margin-bottom:10px;
+    }
+
+    .player{
+      padding:8px 0;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .player:last-child{
+      border-bottom:none;
+    }
+
+    .game-box{
+      background:rgba(255,255,255,0.04);
+      border-radius:18px;
+      padding:25px;
+      text-align:center;
+    }
+
+    .turn{
+      font-size:1.4rem;
+      margin-bottom:20px;
+      color:#facc15;
+      font-weight:bold;
+    }
+
+    .question{
+      font-size:1.6rem;
+      margin-bottom:20px;
+    }
+
+    .buttons{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    .card{
+      width:160px;
+      height:220px;
+      background:white;
+      border-radius:16px;
+      margin:20px auto;
+      color:black;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      font-size:2rem;
+      font-weight:bold;
+      box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .suit{
+      font-size:3rem;
+      margin-top:10px;
+    }
+
+    .red{
+      color:#dc2626;
+    }
+
+    .black{
+      color:#111827;
+    }
+
+    .result{
+      min-height:30px;
+      font-size:1.2rem;
+      margin-top:15px;
+    }
+
+    .stage{
+      margin-top:15px;
+      color:#cbd5e1;
+    }
+
+    @media(max-width:600px){
+
+      h1{
+        font-size:2rem;
+      }
+
+      .card{
+        width:130px;
+        height:180px;
+      }
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Ride the Bus</h1>
+  <p class="subtitle">Online Multiplayer Drinking Game</p>
+
+  <!-- JOIN SCREEN -->
+
+  <div id="joinScreen" class="join-screen">
+
+    <input
+      type="text"
+      id="nameInput"
+      placeholder="Enter your name"
+    />
+
+    <button onclick="joinGame()">
+      Join Game
+    </button>
+
+  </div>
+
+  <!-- GAME SCREEN -->
+
+  <div id="gameScreen" class="hidden">
+
+    <div class="top-bar">
+
+      <div>
+        Logged in as:
+        <strong id="myName"></strong>
+      </div>
+
+      <button onclick="nextTurn()">
+        Next Player
+      </button>
+
+    </div>
+
+    <div class="players">
+
+      <h3>Players</h3>
+
+      <div id="playersList"></div>
+
+    </div>
+
+    <div class="game-box">
+
+      <div class="turn" id="turnText">
+        Waiting for players...
+      </div>
+
+      <div class="question" id="question"></div>
+
+      <div class="buttons" id="buttons"></div>
+
+      <div class="card hidden" id="card">
+
+        <div id="cardValue">A</div>
+
+        <div class="suit" id="cardSuit">♠</div>
+
+      </div>
+
+      <div class="result" id="result"></div>
+
+      <div class="stage">
+        Stage:
+        <span id="stage">1</span>/4
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  // =====================================
+  // FIREBASE CONFIG
+  // =====================================
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDxgt8FQ8Vd_ot6ZroReahCSGIPgxZNoIk",
+    authDomain: "ride-the-bus-c1812.firebaseapp.com",
+    databaseURL: "https://ride-the-bus-c1812-default-rtdb.firebaseio.com",
+    projectId: "ride-the-bus-c1812",
+    storageBucket: "ride-the-bus-c1812.firebasestorage.app",
+    messagingSenderId: "362057050013",
+    appId: "1:362057050013:web:e382bdd9761dbf1f82f174",
+    measurementId: "G-5KM9FJQ4S4"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  const db = firebase.database();
+
+  // =====================================
+  // VARIABLES
+  // =====================================
+
+  let myName = "";
+
+  const suits = [
+    { symbol:"♥", color:"red" },
+    { symbol:"♦", color:"red" },
+    { symbol:"♠", color:"black" },
+    { symbol:"♣", color:"black" }
+  ];
+
+  const values = [
+    "A","2","3","4","5","6","7",
+    "8","9","10","J","Q","K"
+  ];
+
+  const stages = [
+    {
+      question:"Guess the color",
+      options:["Red","Black"]
+    },
+    {
+      question:"Higher or Lower?",
+      options:["Higher","Lower"]
+    },
+    {
+      question:"Inside or Outside?",
+      options:["Inside","Outside"]
+    },
+    {
+      question:"Pick a suit",
+      options:["♥","♦","♠","♣"]
+    }
+  ];
+
+  // =====================================
+  // JOIN GAME
+  // =====================================
+
+  function joinGame(){
+
+    const name =
+      document.getElementById("nameInput")
+      .value
+      .trim();
+
+    if(!name){
+      alert("Enter your name");
+      return;
+    }
+
+    myName = name;
+
+    db.ref("players/" + name).set({
+      name:name,
+      joined:Date.now()
+    });
+
+    document
+      .getElementById("joinScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("gameScreen")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("myName")
+      .textContent = myName;
+
+    setupListeners();
+    initializeGame();
+
+  }
+
+  // =====================================
+  // INITIALIZE GAME
+  // =====================================
+
+  function initializeGame(){
+
+    db.ref("game").once("value", snapshot => {
+
+      if(!snapshot.exists()){
+
+        db.ref("game").set({
+          currentPlayer:myName,
+          playerIndex:0,
+          stage:1,
+          previousCards:[]
+        });
+
+      }
+
+    });
+
+  }
+
+  // =====================================
+  // FIREBASE LISTENERS
+  // =====================================
+
+  function setupListeners(){
+
+    // PLAYER LIST
+
+    db.ref("players").on("value", snapshot => {
+
+      const players = snapshot.val() || {};
+
+      const playersList =
+        document.getElementById("playersList");
+
+      playersList.innerHTML = "";
+
+      Object.values(players).forEach(player => {
+
+        const div =
+          document.createElement("div");
+
+        div.className = "player";
+
+        div.textContent = player.name;
+
+        playersList.appendChild(div);
+
+      });
+
+    });
+
+    // GAME STATE
+
+    db.ref("game").on("value", snapshot => {
+
+      const game = snapshot.val();
+
+      if(!game) return;
+
+      renderGame(game);
+
+    });
+
+  }
+
+  // =====================================
+  // RENDER GAME
+  // =====================================
+
+  function renderGame(game){
+
+    document
+      .getElementById("stage")
+      .textContent = game.stage;
+
+    document
+      .getElementById("turnText")
+      .textContent =
+      `${game.currentPlayer}'s turn`;
+
+    const stage =
+      stages[game.stage - 1];
+
+    document
+      .getElementById("question")
+      .textContent =
+      stage.question;
+
+    const buttons =
+      document.getElementById("buttons");
+
+    buttons.innerHTML = "";
+
+    stage.options.forEach(option => {
+
+      const btn =
+        document.createElement("button");
+
+      btn.textContent = option;
+
+      btn.onclick = () => {
+
+        if(game.currentPlayer !== myName){
+
+          alert("Not your turn");
+
+          return;
+
+        }
+
+        handleGuess(option, game);
+
+      };
+
+      buttons.appendChild(btn);
+
+    });
+
+  }
+
+  // =====================================
+  // RANDOM CARD
+  // =====================================
+
+  function randomCard(){
+
+    const valueIndex =
+      Math.floor(Math.random() * values.length);
+
+    const suit =
+      suits[Math.floor(Math.random() * suits.length)];
+
+    return {
+      value:values[valueIndex],
+      valueIndex:valueIndex,
+      suit:suit.symbol,
+      color:suit.color
+    };
+
+  }
+
+  // =====================================
+  // HANDLE GUESS
+  // =====================================
+
+  function handleGuess(guess, game){
+
+    const card = randomCard();
+
+    showCard(card);
+
+    let correct = false;
+
+    let previousCards =
+      game.previousCards || [];
+
+    // STAGE 1
+
+    if(game.stage === 1){
+
+      correct =
+        guess.toLowerCase() === card.color;
+
+    }
+
+    // STAGE 2
+
+    else if(game.stage === 2){
+
+      const prev = previousCards[0];
+
+      if(guess === "Higher"){
+
+        correct =
+          card.valueIndex > prev.valueIndex;
+
+      } else {
+
+        correct =
+          card.valueIndex < prev.valueIndex;
+
+      }
+
+    }
+
+    // STAGE 3
+
+    else if(game.stage === 3){
+
+      const low =
+        Math.min(
+          previousCards[0].valueIndex,
+          previousCards[1].valueIndex
+        );
+
+      const high =
+        Math.max(
+          previousCards[0].valueIndex,
+          previousCards[1].valueIndex
+        );
+
+      if(guess === "Inside"){
+
+        correct =
+          card.valueIndex > low &&
+          card.valueIndex < high;
+
+      } else {
+
+        correct =
+          card.valueIndex < low ||
+          card.valueIndex > high;
+
+      }
+
+    }
+
+    // STAGE 4
+
+    else if(game.stage === 4){
+
+      correct =
+        guess === card.suit;
+
+    }
+
+    // RESULT
+
+    if(correct){
+
+      document
+        .getElementById("result")
+        .textContent =
+        "✅ Correct!";
+
+      previousCards.push(card);
+
+      if(game.stage < 4){
+
+        db.ref("game").update({
+          stage:game.stage + 1,
+          previousCards:previousCards
+        });
+
+      } else {
+
+        document
+          .getElementById("result")
+          .textContent =
+          "🎉 Completed Ride the Bus!";
+
+        db.ref("game").update({
+          stage:1,
+          previousCards:[]
+        });
+
+      }
+
+    } else {
+
+      document
+        .getElementById("result")
+        .textContent =
+        "❌ Wrong! Drink and restart.";
+
+      db.ref("game").update({
+        stage:1,
+        previousCards:[]
+      });
+
+    }
+
+  }
+
+  // =====================================
+  // SHOW CARD
+  // =====================================
+
+  function showCard(card){
+
+    const cardEl =
+      document.getElementById("card");
+
+    cardEl.classList.remove("hidden");
+
+    document
+      .getElementById("cardValue")
+      .textContent =
+      card.value;
+
+    const suitEl =
+      document.getElementById("cardSuit");
+
+    suitEl.textContent =
+      card.suit;
+
+    suitEl.className =
+      `suit ${card.color}`;
+
+  }
+
+  // =====================================
+  // NEXT TURN
+  // =====================================
+
+  function nextTurn(){
+
+    db.ref("players").once("value", snapshot => {
+
+      const players =
+        Object.values(snapshot.val() || {});
+
+      if(players.length === 0) return;
+
+      db.ref("game").once("value", snap => {
+
+        const game = snap.val();
+
+        let index =
+          (game.playerIndex || 0) + 1;
+
+        if(index >= players.length){
+
+          index = 0;
+
+        }
+
+        db.ref("game").update({
+          currentPlayer:players[index].name,
+          playerIndex:index,
+          stage:1,
+          previousCards:[]
+        });
+
+      });
+
+    });
+
+  }
+
+</script>
+
+</body>
+</html>
+```
